@@ -7,8 +7,8 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import com.ak.speedchecker.databinding.LayoutCircleBinding
-import com.example.internet_speed_testing.InternetSpeedBuilder
-import com.example.internet_speed_testing.ProgressionModel
+import com.ak.speedchecker.speedBuilder.InternetSpeedBuilder
+import com.ak.speedchecker.speedBuilder.ProgressionModel
 import com.github.anastr.speedviewlib.SpeedView
 import java.math.BigDecimal
 import java.text.DecimalFormat
