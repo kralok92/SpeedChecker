@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ak.speedchecker.model.Speed
 import com.ak.speedchecker.repository.SpeedRepository
 import com.ak.speedchecker.speedBuilder.InternetSpeedBuilder
 import com.ak.speedchecker.speedBuilder.ProgressionModel
@@ -46,8 +47,6 @@ class SpeedViewModel@Inject constructor(private val repository: SpeedRepository)
         builder.start("https://storage.googleapis.com/yogpath_vendor_data/vid_6/20220524_ecd67108040.PNG", 1)
         builder.setOnEventInternetSpeedListener(object :InternetSpeedBuilder.OnEventInternetSpeedListener{
             override fun onDownloadProgress(count: Int, progressModel: ProgressionModel) {
-
-
                 val bigDecimal = BigDecimal("" + progressModel.downloadSpeed)
                 val finalDownload = (bigDecimal.toLong() / 1000000).toFloat()
                 val bd = progressModel.downloadSpeed
@@ -78,9 +77,25 @@ class SpeedViewModel@Inject constructor(private val repository: SpeedRepository)
                 val totalassumtionSpeed = (finalDownload + finalUpload) / 2
                 val total = "Total Speed: " + formatFileSize(totalSpeedCount)
                 _totalLiveData.postValue(total)
+
+
+                /**
+                 * save to database
+                 */
+                val upload = "Upload Speed: " + formatFileSize(uploadFinal)
+                val download = "Download Speed: " + formatFileSize(downloadFinal)
+
+                viewModelScope.launch {
+                    with(repository) {
+                        insertSpeed(Speed(download = download, upload = upload, total = total))
+                    }
+                }
+
             }
 
         })
+
+
     }
 
 

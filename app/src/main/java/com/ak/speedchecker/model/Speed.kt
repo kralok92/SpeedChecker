@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "speed")
 data class Speed(
     @PrimaryKey(autoGenerate = true)
-    var id : Int? = null,
+    var id : Int = 0,
     val download: String?,
     val upload: String?,
     val total: String?
